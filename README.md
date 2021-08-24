@@ -4,7 +4,7 @@
 VS Code で拡張を書くときのサンプル。
 
 - パネルを作成し、
-- エディタに書かれた内容を、即時反映する。
+- エディタに書かれた内容を、随時反映する。
 
 ## 参考
 https://betterprogramming.pub/how-to-add-webviews-to-a-visual-studio-code-extension-69884706f056

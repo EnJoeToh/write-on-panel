@@ -9,32 +9,41 @@ export function activate(context: vscode.ExtensionContext) {
       vscode.ViewColumn.Two,
       {enableScripts: true}
     );
-    //エディタの内容を取得
-    panel.webview.html = getPanelContent();
+
+    //エディタの内容を取得、パネルに反映
     const updateWebview = ()=>{
-      panel.webview.html = getPanelContent();
+      panel.webview.html = generatePanelContent();
     };
 
+    //イベントリスナ
     let activeEditor = vscode.window.activeTextEditor;
 
-    //テキストの変動を検知して更新
+    //テキストが変動したら更新
     vscode.workspace.onDidChangeTextDocument(event => {
       if (activeEditor && event.document === activeEditor.document){
         updateWebview();
       }
     });
 
-    //カーソル移動を検知して更新
+    //テキストがセーブされたとき更新
+    vscode.workspace.onDidSaveTextDocument( event => {
+      if (activeEditor && event === activeEditor.document){
+        updateWebview();
+      }
+    });
+
+    //カーソルが移動したら更新
     vscode.window.onDidChangeTextEditorSelection(event => {
       if (activeEditor && event.textEditor === activeEditor){
         updateWebview();
       }
     });
+
   });
   context.subscriptions.push(panelGenerator);
 }
 
-function getPanelContent(){
+function generatePanelContent(){
   let activeEditor = vscode.window.activeTextEditor;
   let text :string = "";
   if (activeEditor){
